@@ -1,7 +1,7 @@
 <div id="header">
     <div class="header-container">
         <div class="logo">
-            <a routerLink="/home">
+            <a routerLink="/">
                 <span>eu</span>nomia
             </a>
         </div>
@@ -9,11 +9,10 @@
         <ul class="menu">
             <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
             <li><a routerLink="/tax-explainer" routerLinkActive="active">Tax explainer</a></li>
-            <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
         </ul>
     </div>
 </div>
 
-<div id="page-container">
-    <router-outlet></router-outlet>
+<div id="page-container" [@routeAnimations]="prepareRoute(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
 </div>

@@ -40,9 +40,48 @@ export class TaxExplainerComponent {
         { country: 'United Kingdom', code: 'GB' },
     ];
 
+    steps = {
+        1: {
+            active: true,
+            open: true
+        },
+        2: {
+            active: false,
+            open: false
+        },
+        3: {
+            active: false,
+            open: false
+        }
+    }
+
+    taxForm = {
+        product: {
+            id: null,
+            name: null,
+            type: null
+        },
+        online: null,
+        threshold: null,
+        transported: null,
+        installed: null,
+        seller: {
+            vat_liable: false,
+            country: null
+        },
+        buyer: {
+            vat_liable: false,
+            country: null
+        }
+    }
+
     constructor() {
     }
 
     ngOnInit() {
+    }
+
+    calculateTax() {
+        console.log('done')
     }
 }

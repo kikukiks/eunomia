@@ -11,7 +11,24 @@
         border-bottom: 1px solid #E5E5E5;
         box-sizing: border-box;
         padding-bottom: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        align-content: center;
+
+        .circle {
+            display: block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #E5E5E5;
+            margin-right: 20px;
+            
+            &.active {
+                background-color: #4ECDC4;
+    
+            }
+        }
     }
 
     .input-group {
@@ -58,6 +75,8 @@
             justify-content: flex-end;
         }
     }
+
+    
 
 }
 

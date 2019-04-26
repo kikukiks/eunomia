@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 // components
 import { TaxExplainerComponent } from './components/tax-explainer.component';
+import { HomeComponent } from './components/home.component';
 
 const routes: Routes = [
-    { path: 'home', component: TaxExplainerComponent },
-    { path: 'tax-explainer', component: TaxExplainerComponent },
-    { path: 'contact', component: TaxExplainerComponent },
-    { path: '**', redirectTo: 'tax-explainer' },
+    { path: 'home', component: HomeComponent, data: {animation: 'HomePage'}  },
+    { path: 'tax-explainer', component: TaxExplainerComponent, data: {animation: 'TaxPage'}  },
+    { path: '**', redirectTo: 'home' },
 ];
 
 @NgModule({
