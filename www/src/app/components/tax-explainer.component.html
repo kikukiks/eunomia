@@ -1,0 +1,94 @@
+<div id="page-title">
+    <div class="icon">
+        <img src="../../assets/img/invoice.svg">
+    </div>
+    <h1>Cross-border VAT explainer</h1>
+</div>
+
+<div id="tax-explainer">
+    <h2>Purchase details</h2>
+    <div class="input-group">
+        <div class="form-input">
+            <label for="good-type">Type of good/service</label>
+            <input name="good-type" id="good-type" type="text">
+        </div>
+    </div>
+
+    <h2>Transaction details</h2>
+    <div class="input-group col2">
+        <div class="form-input">
+            <label for="is-online">Is the product sold through an online store?</label>
+            <select name="is-online" id="is-online">
+                <option disabled="disabled">Select option</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+        <div class="form-input">
+            <label for="annual-threshold">Have you reached your annual threshold?</label>
+            <select name="annual-threshold" id="annual-threshold">
+                <option disabled="disabled">Select option</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+        <div class="form-input">
+            <label for="is-transported">Are the goods transported?</label>
+            <select name="is-transported" id="is-transported">
+                <option disabled="disabled">Select option</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+        <div class="form-input">
+            <label for="is-installed">Are the goods installed by the supplier?</label>
+            <select name="is-installed" id="is-installed">
+                <option disabled="disabled">Select option</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+    </div>
+
+    <h2>Participants</h2>
+    <div class="input-group col2">
+        <div class="form-input">
+            
+            <h3 class="icon-title"><img src="../../assets/img/seller.svg"> Seller</h3>
+
+            <label class="checkbox-container seller">Seller is VAT liable
+                <input type="checkbox" name="seller-vat" id="seller-vat">
+                <span class="checkmark"></span>
+            </label>
+
+            <label for="seller-country">Seller's country</label>
+            <select name="seller-country" id="seller-country">
+                <option disabled="disabled">Select country</option>
+                <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
+            </select>
+        </div>
+        <div class="form-input">
+
+            <h3 class="icon-title"><img src="../../assets/img/buyer.svg"> Buyer</h3>
+
+            <label class="checkbox-container buyer">Buyer is VAT liable
+                <input type="checkbox" name="buyer-vat" id="buyer-vat">
+                <span class="checkmark"></span>
+            </label>
+
+            <label for="buyer-country">Buyer's country</label>
+            <select name="buyer-country" id="buyer-country">
+                <option disabled="disabled">Select country</option>
+                <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="input-group submit">
+        <button type="submit">Finish</button>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
