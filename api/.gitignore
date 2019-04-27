@@ -112,3 +112,5 @@ lib/
 data/
 
 config/
+ecs-task.json
+deploy.sh

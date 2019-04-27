@@ -40,7 +40,7 @@ export class TaxExplainerComponent {
         { country: 'Slovenia', code: 'SI' },
         { country: 'Spain', code: 'ES' },
         { country: 'Sweden', code: 'SW' },
-        { country: 'United Kingdom', code: 'GB' }
+        { country: 'United Kingdom', code: 'UK' }
     ];
 
     euCountries = {
@@ -55,7 +55,7 @@ export class TaxExplainerComponent {
         "FI": { "isoCode": "FI", "name": "Finland", "vat": 24, "limit": 35000 },
         "FR": { "isoCode": "FR", "name": "France", "vat": 20, "limit": 35000 },
         "DE": { "isoCode": "DE", "name": "Germany", "vat": 19, "limit": 100000 },
-        "GR": { "isoCode": "GR", "name": "Greece", "vat": 24, "limit": 35000 },
+        "EL": { "isoCode": "EL", "name": "Greece", "vat": 24, "limit": 35000 },
         "HU": { "isoCode": "HU", "name": "Hungary", "vat": 27, "limit": 27245 },
         "IE": { "isoCode": "IE", "name": "Ireland", "vat": 23, "limit": 35000 },
         "IT": { "isoCode": "IT", "name": "Italy", "vat": 22, "limit": 35000 },
@@ -71,7 +71,7 @@ export class TaxExplainerComponent {
         "SI": { "isoCode": "SI", "name": "Slovenia", "vat": 22, "limit": 50000 },
         "ES": { "isoCode": "ES", "name": "Spain", "vat": 7, "limit": 35000 },
         "SE": { "isoCode": "SE", "name": "Sweden", "vat": 25, "limit": 30200 },
-        "GB": { "isoCode": "GB", "name": "United Kingdom", "vat": 20, "limit": 80995 }
+        "UK": { "isoCode": "UK", "name": "United Kingdom", "vat": 20, "limit": 80995 }
     }
 
     selectedProduct = null;

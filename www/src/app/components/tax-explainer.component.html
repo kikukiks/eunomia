@@ -67,7 +67,7 @@
         <h2><span class="circle" [ngClass]="{'active': steps[3].active}"></span>Transaction details</h2>
         <div *ngIf="steps[3].open" class="input-group col2">
             <div *ngIf="transactionQuestions.thresholdReached" class="form-input">
-                <label for="annual-threshold">Have you reached your annual threshold?</label>
+                <label for="annual-threshold">Have you reached your annual threshold of <b>{{euCountries[taxForm.buyer.country].limit}}€</b> in <b>{{euCountries[taxForm.buyer.country].name}}</b>?</label>
                 <div class="buttons">
                     <button type="button" (click)="taxForm.threshold = true; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === true}">Yes</button>
                     <button type="button" (click)="taxForm.threshold = false; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === false}">No</button>
