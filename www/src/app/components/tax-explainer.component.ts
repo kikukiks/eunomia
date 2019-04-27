@@ -89,6 +89,8 @@ export class TaxExplainerComponent {
         goodsInstalled: null
     }
 
+    finished = null;
+
     constructor(
         private feathers: Feathers
     ) {
@@ -121,7 +123,7 @@ export class TaxExplainerComponent {
     }
 
     calculateTax() {
-        console.log('done')
+        this.finished = true;
     }
 
     resetSearch() {

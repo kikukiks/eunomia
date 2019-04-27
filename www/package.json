@@ -1,6 +1,7 @@
 {
   "name": "www",
   "version": "0.0.0",
+  "license": "cc-by-4.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
