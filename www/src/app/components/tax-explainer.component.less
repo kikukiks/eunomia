@@ -59,7 +59,28 @@
             }
 
             h3 {
-                margin-bottom: 30px;
+                margin-bottom: 25px;
+            }
+
+            .buttons {
+                display: flex;
+                margin-bottom: 25px;
+                justify-content: space-between;
+
+                button {
+                    color: #2D354A;
+                    border: 2px solid #94979A;
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    background-color: #fff;
+                    width: ~"calc(50% - 10px)";
+                    
+                    &.active {
+                        color: #fff;
+                        border: none;
+                        background-color: #4ECDC4;
+                    }
+                }
             }
         }
 

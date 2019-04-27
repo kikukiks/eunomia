@@ -66,21 +66,28 @@ export class TaxExplainerComponent {
             name: null,
             type: null
         },
-        online: null,
         threshold: null,
         transported: null,
         installed: null,
         seller: {
-            vat_liable: false,
+            vat_liable: null,
             country: null
         },
         buyer: {
-            vat_liable: false,
+            vat_liable: null,
             country: null
         }
     }
 
     suggestions = [];
+
+    payTaxesIn = null;
+
+    transactionQuestions = {
+        thresholdReached: null,
+        goodsTransported: null,
+        goodsInstalled: null
+    }
 
     constructor(
         private feathers: Feathers
@@ -97,7 +104,7 @@ export class TaxExplainerComponent {
                 q: e
             }
         }).then((res) => {
-            if (res['data'] && res['data'].length){
+            if (res['data'] && res['data'].length) {
                 this.suggestions = res['data']
             } else {
                 this.suggestions = [];
@@ -121,12 +128,89 @@ export class TaxExplainerComponent {
         this.suggestions = [];
         this.selectedProduct = null;
         if (this.searchComponent) this.searchComponent.searchValue = null;
+        
+        this.transactionQuestions = {
+            thresholdReached: null,
+            goodsTransported: null,
+            goodsInstalled: null
+        }
+
+        this.taxForm.threshold = null;
+        this.taxForm.transported = null;
+        this.taxForm.installed = null;
+
+        this.payTaxesIn = null;
+
+        this.steps[2].active = false;
+        this.steps[3].active = false;
+        this.steps[1].active= true;
+
+
     }
 
     selectItem(e) {
         console.log(e);
-        this.selectedProduct = e;
         this.suggestions = [];
+        this.selectedProduct = e;
         if (this.searchComponent) this.searchComponent.searchValue = this.selectedProduct['description'];
+        this.steps[2].open = true;
+        this.steps[2].active = true;
+        this.steps[1].active = false;
+        this.steps[3].active = false;
+        this.secondStepComplete();
+    }
+
+    secondStepComplete() {
+        if (
+            this.selectedProduct
+            && this.taxForm.seller.vat_liable !== null && this.taxForm.seller.country !== null
+            && this.taxForm.buyer.vat_liable !== null && this.taxForm.buyer.country !== null
+        ) {
+            this.steps[3].open = true;
+            this.steps[3].active = true;
+            this.steps[1].active = false;
+            this.steps[2].active = false;
+
+            this.transactionQuestions = {
+                thresholdReached: null,
+                goodsTransported: null,
+                goodsInstalled: null
+            }
+
+            this.taxForm.threshold = null;
+            this.taxForm.transported = null;
+            this.taxForm.installed = null;
+
+            this.payTaxesIn = null;
+
+            if (this.taxForm.buyer.vat_liable === false) {
+                if (this.selectedProduct.type == 'service') this.payTaxesIn = this.taxForm.seller.country;
+                else if (this.selectedProduct.type == 'product') this.transactionQuestions.thresholdReached = true;
+            } else if (this.taxForm.buyer.vat_liable === true) {
+                if (this.selectedProduct.type == 'service') this.payTaxesIn = this.taxForm.buyer.country;
+                else if (this.selectedProduct.type == 'product') {
+                    this.transactionQuestions.goodsTransported = true;
+                }
+            }
+        }
+    }
+
+    checkLastStep(step) {
+        if (step == 'threshold') {
+            if (this.taxForm.threshold == true) this.payTaxesIn = this.taxForm.buyer.country;
+            else this.payTaxesIn = this.taxForm.seller.country;
+        } else if (step == 'transported') {
+            if (this.taxForm.transported === false) {
+                this.payTaxesIn = this.taxForm.buyer.country;
+                this.transactionQuestions.goodsInstalled = false;
+                this.taxForm.installed = null;
+            } else {
+                this.transactionQuestions.goodsInstalled = true;
+                this.payTaxesIn = null;
+            }
+        } else if (step == 'installed') {
+            if (this.taxForm.installed == true) this.payTaxesIn = this.taxForm.buyer.country;
+            else this.payTaxesIn = this.taxForm.seller.country;
+        }
     }
 }

@@ -10,60 +10,32 @@
     <div class="input-group">
         <div class="form-input">
             <label for="good-type">Type of good/service</label>
-            <input-debounce #searchComponent delay="300" placeholder="{{'Search goods or services'}}" (value)="search($event)" (select)="selectItem($event)" (clear)="resetSearch()"
-                [inputId]="'good-type'" [completed]="!!this.selectedProduct" [invalid]="false" [suggestions]="suggestions" [required]="true"></input-debounce>
+            <input-debounce #searchComponent delay="300" placeholder="{{'Search goods or services'}}" (value)="search($event)"
+                (select)="selectItem($event)" (clear)="resetSearch()" [inputId]="'good-type'" [completed]="!!this.selectedProduct"
+                [invalid]="false" [suggestions]="suggestions" [required]="true"></input-debounce>
         </div>
     </div>
 
-    <h2><span class="circle" [ngClass]="{'active': steps[2].active}"></span>Transaction details</h2>
+    <h2><span class="circle" [ngClass]="{'active': steps[2].active}"></span>Participants</h2>
     <div *ngIf="steps[2].open" class="input-group col2">
         <div class="form-input">
-            <label for="is-online">Is the product sold through an online store?</label>
-            <select name="is-online" id="is-online">
-                <option disabled="disabled">Select option</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-        <div class="form-input">
-            <label for="annual-threshold">Have you reached your annual threshold?</label>
-            <select name="annual-threshold" id="annual-threshold">
-                <option disabled="disabled">Select option</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-        <div class="form-input">
-            <label for="is-transported">Are the goods transported?</label>
-            <select name="is-transported" id="is-transported">
-                <option disabled="disabled">Select option</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-        <div class="form-input">
-            <label for="is-installed">Are the goods installed by the supplier?</label>
-            <select name="is-installed" id="is-installed">
-                <option disabled="disabled">Select option</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-    </div>
 
-    <h2><span class="circle" [ngClass]="{'active': steps[3].active}"></span>Participants</h2>
-    <div *ngIf="steps[3].open" class="input-group col2">
-        <div class="form-input">
-            
             <h3 class="icon-title"><img src="../../assets/img/seller.svg"> Seller</h3>
 
-            <label class="checkbox-container seller">Seller is VAT liable
+            <!-- <label class="checkbox-container seller">Seller is VAT liable
                 <input type="checkbox" name="seller-vat" id="seller-vat">
                 <span class="checkmark"></span>
-            </label>
+            </label> -->
+
+            <label>Seller is VAT liable</label>
+            <div class="buttons">
+                <button type="button" (click)="taxForm.seller.vat_liable = true; secondStepComplete();" [ngClass]="{'active': taxForm.seller.vat_liable === true}">Yes</button>
+                <button type="button" (click)="taxForm.seller.vat_liable = false; secondStepComplete();" [ngClass]="{'active': taxForm.seller.vat_liable === false}">No</button>
+            </div>
 
             <label for="seller-country">Seller's country</label>
-            <select name="seller-country" id="seller-country">
+            <select [(ngModel)]="taxForm.seller.country" (ngModelChange)="secondStepComplete()" name="seller-country"
+                id="seller-country">
                 <option disabled="disabled">Select country</option>
                 <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
             </select>
@@ -72,20 +44,51 @@
 
             <h3 class="icon-title"><img src="../../assets/img/buyer.svg"> Buyer</h3>
 
-            <label class="checkbox-container buyer">Buyer is VAT liable
+            <!-- <label class="checkbox-container buyer">Buyer is VAT liable
                 <input type="checkbox" name="buyer-vat" id="buyer-vat">
                 <span class="checkmark"></span>
-            </label>
+            </label> -->
+
+            <label>Buyer is VAT liable</label>
+            <div class="buttons">
+                <button type="button" (click)="taxForm.buyer.vat_liable = true; secondStepComplete();" [ngClass]="{'active': taxForm.buyer.vat_liable === true}">Yes</button>
+                <button type="button" (click)="taxForm.buyer.vat_liable = false; secondStepComplete();" [ngClass]="{'active': taxForm.buyer.vat_liable === false}">No</button>
+            </div>
 
             <label for="buyer-country">Buyer's country</label>
-            <select name="buyer-country" id="buyer-country">
+            <select [(ngModel)]="taxForm.buyer.country" (ngModelChange)="secondStepComplete()" name="buyer-country" id="buyer-country">
                 <option disabled="disabled">Select country</option>
                 <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
             </select>
         </div>
     </div>
 
-    <div *ngIf="steps[3].open" class="input-group submit">
+    <h2><span class="circle" [ngClass]="{'active': steps[3].active}"></span>Transaction details</h2>
+    <div *ngIf="steps[3].open" class="input-group col2">
+        <div *ngIf="transactionQuestions.thresholdReached" class="form-input">
+            <label for="annual-threshold">Have you reached your annual threshold?</label>
+            <div class="buttons">
+                <button type="button" (click)="taxForm.threshold = true; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === true}">Yes</button>
+                <button type="button" (click)="taxForm.threshold = false; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === false}">No</button>
+            </div>
+        </div>
+        <div *ngIf="transactionQuestions.goodsTransported" class="form-input">
+            <label for="is-transported">Are the products transported?</label>
+            <div class="buttons">
+                <button type="button" (click)="taxForm.transported = true; checkLastStep('transported');" [ngClass]="{'active': taxForm.transported === true}">Yes</button>
+                <button type="button" (click)="taxForm.transported = false; checkLastStep('transported');" [ngClass]="{'active': taxForm.transported === false}">No</button>
+            </div>
+        </div>
+        <div *ngIf="transactionQuestions.goodsInstalled" class="form-input">
+            <label for="is-installed">Are the products installed by the supplier?</label>
+            <div class="buttons">
+                <button type="button" (click)="taxForm.installed = true; checkLastStep('installed');" [ngClass]="{'active': taxForm.installed === true}">Yes</button>
+                <button type="button" (click)="taxForm.installed = false; checkLastStep('installed');" [ngClass]="{'active': taxForm.installed === false}">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="payTaxesIn" class="input-group submit">
         <button type="submit">Finish</button>
     </div>
 </form>
