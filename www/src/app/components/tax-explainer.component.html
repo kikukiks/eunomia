@@ -1,121 +1,123 @@
-<div id="page-title">
-    <div class="icon">
-        <img src="../../assets/img/invoice.svg">
+<div class="content-wrapper">
+    <div id="page-title">
+        <div class="icon">
+            <img src="../../assets/img/invoice.svg">
+        </div>
+        <h1>Cross-border VAT explainer</h1>
     </div>
-    <h1>Cross-border VAT explainer</h1>
-</div>
-
-<form id="tax-explainer" #applicationForm="ngForm" (submit)="calculateTax()">
-    <div *ngIf="!finished">
-        <h2><span class="circle" [ngClass]="{'active': steps[1].active}"></span>Purchase details</h2>
-        <div class="input-group">
-            <div class="form-input">
-                <label for="good-type">Type of good/service</label>
-                <input-debounce #searchComponent delay="300" placeholder="{{'Search goods or services'}}" (value)="search($event)"
-                    (select)="selectItem($event)" (clear)="resetSearch()" [inputId]="'good-type'" [completed]="!!this.selectedProduct"
-                    [invalid]="false" [suggestions]="suggestions" [required]="true"></input-debounce>
+    
+    <form id="tax-explainer" #applicationForm="ngForm" (submit)="calculateTax()">
+        <div *ngIf="!finished">
+            <h2><span class="circle" [ngClass]="{'active': steps[1].active}"></span>Purchase details</h2>
+            <div class="input-group">
+                <div class="form-input">
+                    <label for="good-type">Type of good/service</label>
+                    <input-debounce #searchComponent delay="300" placeholder="{{'Search goods or services'}}" (value)="search($event)"
+                        (select)="selectItem($event)" (clear)="resetSearch()" [inputId]="'good-type'" [completed]="!!this.selectedProduct"
+                        [invalid]="false" [suggestions]="suggestions" [required]="true"></input-debounce>
+                </div>
+            </div>
+        
+            <h2><span class="circle" [ngClass]="{'active': steps[2].active}"></span>Participants</h2>
+            <div *ngIf="steps[2].open" class="input-group col2">
+                <div class="form-input">
+        
+                    <h3 class="icon-title"><img src="../../assets/img/seller.svg"> Seller</h3>
+        
+                    <!-- <label class="checkbox-container seller">Seller is VAT liable
+                        <input type="checkbox" name="seller-vat" id="seller-vat">
+                        <span class="checkmark"></span>
+                    </label> -->
+        
+                    <label>Seller is VAT liable</label>
+                    <div class="buttons">
+                        <button type="button" (click)="taxForm.seller.vat_liable = true; secondStepComplete();" [ngClass]="{'active': taxForm.seller.vat_liable === true}">Yes</button>
+                        <button type="button" (click)="taxForm.seller.vat_liable = false; secondStepComplete();" [ngClass]="{'active': taxForm.seller.vat_liable === false}">No</button>
+                    </div>
+        
+                    <label for="seller-country">Seller's country</label>
+                    <select [(ngModel)]="taxForm.seller.country" (ngModelChange)="secondStepComplete()" name="seller-country"
+                        id="seller-country">
+                        <option disabled="disabled">Select country</option>
+                        <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
+                    </select>
+                </div>
+                <div class="form-input">
+        
+                    <h3 class="icon-title"><img src="../../assets/img/buyer.svg"> Buyer</h3>
+        
+                    <!-- <label class="checkbox-container buyer">Buyer is VAT liable
+                        <input type="checkbox" name="buyer-vat" id="buyer-vat">
+                        <span class="checkmark"></span>
+                    </label> -->
+        
+                    <label>Buyer is VAT liable</label>
+                    <div class="buttons">
+                        <button type="button" (click)="taxForm.buyer.vat_liable = true; secondStepComplete();" [ngClass]="{'active': taxForm.buyer.vat_liable === true}">Yes</button>
+                        <button type="button" (click)="taxForm.buyer.vat_liable = false; secondStepComplete();" [ngClass]="{'active': taxForm.buyer.vat_liable === false}">No</button>
+                    </div>
+        
+                    <label for="buyer-country">Buyer's country</label>
+                    <select [(ngModel)]="taxForm.buyer.country" (ngModelChange)="secondStepComplete()" name="buyer-country" id="buyer-country">
+                        <option disabled="disabled">Select country</option>
+                        <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
+                    </select>
+                </div>
+            </div>
+        
+            <h2><span class="circle" [ngClass]="{'active': steps[3].active}"></span>Transaction details</h2>
+            <div *ngIf="steps[3].open" class="input-group col2">
+                <div *ngIf="transactionQuestions.thresholdReached" class="form-input">
+                    <label for="annual-threshold">Have you reached your annual threshold of <b>{{euCountries[taxForm.buyer.country].limit}}€</b> in <b>{{euCountries[taxForm.buyer.country].name}}</b>?</label>
+                    <div class="buttons">
+                        <button type="button" (click)="taxForm.threshold = true; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === true}">Yes</button>
+                        <button type="button" (click)="taxForm.threshold = false; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === false}">No</button>
+                    </div>
+                </div>
+                <div *ngIf="transactionQuestions.goodsTransported" class="form-input">
+                    <label for="is-transported">Are the products transported?</label>
+                    <div class="buttons">
+                        <button type="button" (click)="taxForm.transported = true; checkLastStep('transported');" [ngClass]="{'active': taxForm.transported === true}">Yes</button>
+                        <button type="button" (click)="taxForm.transported = false; checkLastStep('transported');" [ngClass]="{'active': taxForm.transported === false}">No</button>
+                    </div>
+                </div>
+                <div *ngIf="transactionQuestions.goodsInstalled" class="form-input">
+                    <label for="is-installed">Are the products installed by the supplier?</label>
+                    <div class="buttons">
+                        <button type="button" (click)="taxForm.installed = true; checkLastStep('installed');" [ngClass]="{'active': taxForm.installed === true}">Yes</button>
+                        <button type="button" (click)="taxForm.installed = false; checkLastStep('installed');" [ngClass]="{'active': taxForm.installed === false}">No</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div *ngIf="payTaxesIn" class="input-group submit">
+                <button type="submit">Finish</button>
             </div>
         </div>
     
-        <h2><span class="circle" [ngClass]="{'active': steps[2].active}"></span>Participants</h2>
-        <div *ngIf="steps[2].open" class="input-group col2">
-            <div class="form-input">
-    
-                <h3 class="icon-title"><img src="../../assets/img/seller.svg"> Seller</h3>
-    
-                <!-- <label class="checkbox-container seller">Seller is VAT liable
-                    <input type="checkbox" name="seller-vat" id="seller-vat">
-                    <span class="checkmark"></span>
-                </label> -->
-    
-                <label>Seller is VAT liable</label>
-                <div class="buttons">
-                    <button type="button" (click)="taxForm.seller.vat_liable = true; secondStepComplete();" [ngClass]="{'active': taxForm.seller.vat_liable === true}">Yes</button>
-                    <button type="button" (click)="taxForm.seller.vat_liable = false; secondStepComplete();" [ngClass]="{'active': taxForm.seller.vat_liable === false}">No</button>
-                </div>
-    
-                <label for="seller-country">Seller's country</label>
-                <select [(ngModel)]="taxForm.seller.country" (ngModelChange)="secondStepComplete()" name="seller-country"
-                    id="seller-country">
-                    <option disabled="disabled">Select country</option>
-                    <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
-                </select>
-            </div>
-            <div class="form-input">
-    
-                <h3 class="icon-title"><img src="../../assets/img/buyer.svg"> Buyer</h3>
-    
-                <!-- <label class="checkbox-container buyer">Buyer is VAT liable
-                    <input type="checkbox" name="buyer-vat" id="buyer-vat">
-                    <span class="checkmark"></span>
-                </label> -->
-    
-                <label>Buyer is VAT liable</label>
-                <div class="buttons">
-                    <button type="button" (click)="taxForm.buyer.vat_liable = true; secondStepComplete();" [ngClass]="{'active': taxForm.buyer.vat_liable === true}">Yes</button>
-                    <button type="button" (click)="taxForm.buyer.vat_liable = false; secondStepComplete();" [ngClass]="{'active': taxForm.buyer.vat_liable === false}">No</button>
-                </div>
-    
-                <label for="buyer-country">Buyer's country</label>
-                <select [(ngModel)]="taxForm.buyer.country" (ngModelChange)="secondStepComplete()" name="buyer-country" id="buyer-country">
-                    <option disabled="disabled">Select country</option>
-                    <option *ngFor="let item of euList" [value]="item.code">{{item.country}}</option>
-                </select>
-            </div>
-        </div>
-    
-        <h2><span class="circle" [ngClass]="{'active': steps[3].active}"></span>Transaction details</h2>
-        <div *ngIf="steps[3].open" class="input-group col2">
-            <div *ngIf="transactionQuestions.thresholdReached" class="form-input">
-                <label for="annual-threshold">Have you reached your annual threshold of <b>{{euCountries[taxForm.buyer.country].limit}}€</b> in <b>{{euCountries[taxForm.buyer.country].name}}</b>?</label>
-                <div class="buttons">
-                    <button type="button" (click)="taxForm.threshold = true; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === true}">Yes</button>
-                    <button type="button" (click)="taxForm.threshold = false; checkLastStep('threshold');" [ngClass]="{'active': taxForm.threshold === false}">No</button>
-                </div>
-            </div>
-            <div *ngIf="transactionQuestions.goodsTransported" class="form-input">
-                <label for="is-transported">Are the products transported?</label>
-                <div class="buttons">
-                    <button type="button" (click)="taxForm.transported = true; checkLastStep('transported');" [ngClass]="{'active': taxForm.transported === true}">Yes</button>
-                    <button type="button" (click)="taxForm.transported = false; checkLastStep('transported');" [ngClass]="{'active': taxForm.transported === false}">No</button>
-                </div>
-            </div>
-            <div *ngIf="transactionQuestions.goodsInstalled" class="form-input">
-                <label for="is-installed">Are the products installed by the supplier?</label>
-                <div class="buttons">
-                    <button type="button" (click)="taxForm.installed = true; checkLastStep('installed');" [ngClass]="{'active': taxForm.installed === true}">Yes</button>
-                    <button type="button" (click)="taxForm.installed = false; checkLastStep('installed');" [ngClass]="{'active': taxForm.installed === false}">No</button>
-                </div>
-            </div>
-        </div>
-    
-        <div *ngIf="payTaxesIn" class="input-group submit">
-            <button type="submit">Finish</button>
-        </div>
-    </div>
-
-    <div *ngIf="finished && !loading" class="finished">
-        <h1 *ngIf="taxForm.seller.vat_liable === false">This transaction will not be taxed.</h1>
-        <h1 *ngIf="taxForm.seller.vat_liable">
-            This transaction will be taxed in <a class="blue">{{euCountries[payTaxesIn].name}}.</a>
-            <br>
-            <ng-container *ngIf="!vat.reduced">
-                The VAT rate is <a class="green">{{vat.rate}}%.</a>
-            </ng-container>
-            <ng-container *ngIf="vat.reduced">
-                The tax is <a class="green">a reduced tax</a> at a rate of <a class="green">{{+vat.rate}}%.</a>
-            </ng-container>
-            <ng-container *ngIf="selectedProduct.reverse_charge">
+        <div *ngIf="finished && !loading" class="finished">
+            <h1 *ngIf="taxForm.seller.vat_liable === false">This transaction will not be taxed.</h1>
+            <h1 *ngIf="taxForm.seller.vat_liable">
+                This transaction will be taxed in <a class="blue">{{euCountries[payTaxesIn].name}}.</a>
                 <br>
-                It is also subject to the <a class="blue">reverse charge procedure.</a>
-            </ng-container>
-        </h1>
-        <br>
-        <br>
-        <button type="button" (click)="restart()">Do it again!</button>
-    </div>
-</form>
-<br>
-<br>
-<br>
-<br>
+                <ng-container *ngIf="!vat.reduced">
+                    The VAT rate is <a class="green">{{vat.rate}}%.</a>
+                </ng-container>
+                <ng-container *ngIf="vat.reduced">
+                    The tax is <a class="green">a reduced tax</a> at a rate of <a class="green">{{+vat.rate}}%.</a>
+                </ng-container>
+                <ng-container *ngIf="selectedProduct.reverse_charge && taxForm.seller.vat_liable && taxForm.buyer.vat_liable">
+                    <br>
+                    It is also subject to the <a class="blue">reverse charge procedure.</a>
+                </ng-container>
+            </h1>
+            <br>
+            <br>
+            <button type="button" (click)="restart()">Do it again!</button>
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>

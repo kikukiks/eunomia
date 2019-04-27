@@ -12,19 +12,19 @@ export const slideInAnimation =
                     top: 0,
                     left: 0,
                     width: '100%',
-                    paddingTop: '40px'
+                    height: '100%'
                 })
             ]),
             query(':enter', [
-                style({ paddingTop: '0px', opacity: '0' })
+                style({ opacity: '0' })
             ]),
             query(':leave', animateChild()),
             group([
                 query(':leave', [
-                    animate('400ms ease-in-out', style({ opacity: '0', paddingTop: '0px' }))
+                    animate('400ms ease-in-out', style({ opacity: '0'}))
                 ]),
                 query(':enter', [
-                    animate('700ms ease-in-out', style({ opacity: '1', paddingTop: '40px' }))
+                    animate('700ms ease-in-out', style({ opacity: '1' }))
                 ])
             ]),
             query(':enter', animateChild()),
