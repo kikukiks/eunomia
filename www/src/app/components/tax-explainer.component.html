@@ -10,7 +10,8 @@
     <div class="input-group">
         <div class="form-input">
             <label for="good-type">Type of good/service</label>
-            <input name="good-type" id="good-type" type="text" placeholder="Search goods or services">
+            <input-debounce #searchComponent delay="300" placeholder="{{'Search goods or services'}}" (value)="search($event)" (select)="selectItem($event)" (clear)="resetSearch()"
+                [inputId]="'good-type'" [completed]="!!this.selectedProduct" [invalid]="false" [suggestions]="suggestions" [required]="true"></input-debounce>
         </div>
     </div>
 

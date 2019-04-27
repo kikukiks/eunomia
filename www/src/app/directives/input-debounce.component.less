@@ -1,0 +1,52 @@
+.debounce-wrapper {
+    position: relative;
+
+    input {
+        width: 100%;
+        border: 1px solid #BCBEBF;
+        padding: 9px 12px;
+        border-radius: 4px;
+        box-sizing: border-box;
+
+        &:disabled {
+            background-color: #E5E5E5;
+        }
+    }
+
+    .suggestions {
+        top: 100%;
+        width: 100%;
+        border: 1px solid #BCBEBF;
+        position: absolute;
+        font-size: 10pt;
+        box-shadow: 0px 0px 10px -3px #E5E5E5;
+        font-family: 'Open Sans', sans-serif;
+        border-radius: 4px;
+        background-color: #fff;
+
+        .suggestion {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 9px 12px;
+            
+            &:hover {
+                color: #fff;
+                background-color: #7281C2;
+                cursor: pointer;
+            }
+        }
+    }
+
+    i.close {
+        top: 0;
+        right: 0;
+        height: 38px;
+        width: 30px;
+        cursor: pointer;
+        display: flex;
+        position: absolute; 
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+    }
+}

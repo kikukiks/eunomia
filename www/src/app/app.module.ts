@@ -7,12 +7,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaxExplainerComponent } from './components/tax-explainer.component';
 import { HomeComponent } from './components/home.component';
+import { InputDebounceComponent } from './directives/input-debounce.component';
+import { Feathers } from './services/feathers.service';
 
 @NgModule({
     declarations: [
         AppComponent,
         TaxExplainerComponent,
-        HomeComponent
+        HomeComponent,
+        InputDebounceComponent
     ],
     imports: [
         BrowserModule,
@@ -20,7 +23,7 @@ import { HomeComponent } from './components/home.component';
         BrowserAnimationsModule,
         FormsModule
     ],
-    providers: [],
+    providers: [Feathers],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

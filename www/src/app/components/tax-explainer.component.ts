@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Feathers } from '../services/feathers.service';
 
 @Component({
     selector: 'tax-explainer',
@@ -8,6 +9,8 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 
 export class TaxExplainerComponent {
+
+    @ViewChild('searchComponent') searchComponent;
 
     euList = [
         { country: 'Austria', code: 'AT' },
@@ -39,6 +42,8 @@ export class TaxExplainerComponent {
         { country: 'Sweden', code: 'SW' },
         { country: 'United Kingdom', code: 'GB' },
     ];
+
+    selectedProduct = null;
 
     steps = {
         1: {
@@ -75,13 +80,53 @@ export class TaxExplainerComponent {
         }
     }
 
-    constructor() {
+    suggestions = [];
+
+    constructor(
+        private feathers: Feathers
+    ) {
     }
 
     ngOnInit() {
     }
 
+    search(e) {
+        console.log(e)
+        this.feathers.service('products').find({
+            query: {
+                q: e
+            }
+        }).then((res) => {
+            if (res['data'] && res['data'].length){
+                this.suggestions = res['data']
+            } else {
+                this.suggestions = [];
+            }
+            console.log(res);
+        }).catch((err) => {
+            console.log(err);
+            this.suggestions = [];
+        })
+    }
+
+    clearSearch() {
+        this.suggestions = [];
+    }
+
     calculateTax() {
         console.log('done')
+    }
+
+    resetSearch() {
+        this.suggestions = [];
+        this.selectedProduct = null;
+        if (this.searchComponent) this.searchComponent.searchValue = null;
+    }
+
+    selectItem(e) {
+        console.log(e);
+        this.selectedProduct = e;
+        this.suggestions = [];
+        if (this.searchComponent) this.searchComponent.searchValue = this.selectedProduct['description'];
     }
 }

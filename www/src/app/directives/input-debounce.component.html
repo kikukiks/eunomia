@@ -1,0 +1,10 @@
+<div class="debounce-wrapper">
+    <input #dinput type="text" [id]="inputId" [autocomplete]="autocomplete ? 'on' : 'off'" [placeholder]="placeholder"
+           (focus)="active = true;focusEmit();" (focusout)="focusOutEmit();" [(ngModel)]="searchValue"
+           [ngClass]="{'active' : active}" [required]="required" [disabled]="disabled || completed" #searchinput="ngModel"
+           [class.ng-invalid]="invalid">
+    <i *ngIf="!disabled && completed" (click)="clearInput()" class="icon ion-md-close close"></i>
+    <div *ngIf="suggestions.length" class="suggestions">
+        <div *ngFor="let item of suggestions" (click)="selectItem(item)" class="suggestion">{{item.description}}</div>
+    </div>
+</div>
