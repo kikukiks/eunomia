@@ -94,8 +94,25 @@
         </div>
     </div>
 
-    <div class="finished">
-        
+    <div *ngIf="finished && !loading" class="finished">
+        <h1 *ngIf="taxForm.seller.vat_liable === false">This transaction will not be taxed.</h1>
+        <h1 *ngIf="taxForm.seller.vat_liable">
+            This transaction will be taxed in <a class="blue">{{euCountries[payTaxesIn].name}}.</a>
+            <br>
+            <ng-container *ngIf="!vat.reduced">
+                The VAT rate is <a class="green">{{vat.rate}}%.</a>
+            </ng-container>
+            <ng-container *ngIf="vat.reduced">
+                The tax is <a class="green">a reduced tax</a> at a rate of <a class="green">{{+vat.rate}}%.</a>
+            </ng-container>
+            <ng-container *ngIf="selectedProduct.reverse_charge">
+                <br>
+                It is also subject to the <a class="blue">reverse charge procedure.</a>
+            </ng-container>
+        </h1>
+        <br>
+        <br>
+        <button type="button" (click)="restart()">Do it again!</button>
     </div>
 </form>
 <br>
