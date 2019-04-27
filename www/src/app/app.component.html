@@ -13,6 +13,6 @@
     </div>
 </div>
 
-<div id="page-container" [@routeAnimations]="prepareRoute(outlet)">
+<div id="page-container" [@routeAnimations]="prepareRoute(outlet)" [ngClass]="{'home': router.url == '/home'}">
     <router-outlet #outlet="outlet"></router-outlet>
 </div>

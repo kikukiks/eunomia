@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { slideInAnimation } from './animations';
 
 @Component({
@@ -12,6 +12,10 @@ import { slideInAnimation } from './animations';
 })
 export class AppComponent {
     title = 'Eunomia';
+
+    constructor(public router: Router) {
+
+    }
 
     prepareRoute(outlet: RouterOutlet) {
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];

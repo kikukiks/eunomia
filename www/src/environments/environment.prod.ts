@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiURL: 'http://localhost:3030'
+    apiURL: 'http://eunomia-api.montonio.com:3030'
 };
